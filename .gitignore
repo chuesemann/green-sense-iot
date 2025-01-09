@@ -1,0 +1,15 @@
+esp32/build/
+webserver/node_modules/
+rest-api/node_modules/
+
+# ignore temporary files and logs
+*.log
+*.tmp
+
+# ide specific files
+.vscode/
+.idea/
+
+# ESP32 specifi files
+esp32/.pio/
+esp32/.vscode/
