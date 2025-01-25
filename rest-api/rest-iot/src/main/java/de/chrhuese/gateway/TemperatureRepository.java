@@ -5,14 +5,16 @@ import de.chrhuese.control.TemperatureConverter;
 import de.chrhuese.entity.Temperature;
 import de.chrhuese.entity.TemperatureKatalog;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
 
 import java.sql.SQLOutput;
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class TemperatureRepository implements TemperatureKatalog {
 
     @Inject
@@ -34,12 +36,16 @@ public class TemperatureRepository implements TemperatureKatalog {
     }
 
     @Override
-    @Transactional
     public boolean createTemperature(TemperatureDTO temperatureDTO) {
         try {
-            em.persist(converter.fromDTO(temperatureDTO));
+            Temperature temperature = converter.fromDTO(temperatureDTO);
+            System.out.println("Persisting Temperature: " + temperature);
+            em.persist(temperature);
+            //em.flush();
+            System.out.println("Temperature persisted successfully");
             return true;
-        } catch (Exception e) {
+        } catch (PersistenceException e) {
+            System.out.println("Error while persisting temperature: " + e.getMessage());;
             return false;
         }
     }

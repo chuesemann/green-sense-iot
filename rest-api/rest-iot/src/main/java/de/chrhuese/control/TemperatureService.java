@@ -4,33 +4,31 @@ import de.chrhuese.boundary.TemperatureDTO;
 import de.chrhuese.entity.Temperature;
 import de.chrhuese.entity.TemperatureKatalog;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class TemperatureService {
 
     @Inject
-    private TemperatureKatalog katalog;
-
-    @Inject
-    private TemperatureConverter converter;
+    TemperatureKatalog katalog;
 
 
     @Transactional
     public TemperatureDTO getLastTemperature() {
         Temperature lastTemperature = katalog.getLastTemperature();
-        return converter.toDTO(lastTemperature);
+        return TemperatureDTO.Converter.toDTO(lastTemperature);
     }
 
     public List<TemperatureDTO> getTemperatures() {
         List<Temperature> temperatures = katalog.getTemperatures();
         List<TemperatureDTO> temperaturesDTO = new ArrayList<>();
         for (Temperature temperature : temperatures) {
-            temperaturesDTO.add(converter.toDTO(temperature));
+            temperaturesDTO.add(TemperatureDTO.Converter.toDTO(temperature));
         }
         return temperaturesDTO;
     }

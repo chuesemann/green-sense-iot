@@ -15,7 +15,7 @@ public class Temperature {
     }
 
     @Id
-    @SequenceGenerator(name = "temperatureSequence", sequenceName = "temperatureSeq", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "temperatureSequence", sequenceName = "temperatureSeq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "temperatureSequence")
     public long getId() {
         return id;
@@ -49,9 +49,13 @@ public class Temperature {
         this.timestamp = timestamp;
     }
 
-    public Temperature(long id, float temperature, long timestamp) {
-        this.id = id;
-        this.temperature = temperature;
-        this.timestamp = timestamp;
+    @Override
+    public String toString() {
+        return "Temperature{" +
+                "id=" + id +
+                ", value=" + temperature +
+                ", sensorId=" + sensorId +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

@@ -1,15 +1,19 @@
 package de.chrhuese.boundary.api;
 
 import de.chrhuese.boundary.TemperatureDTO;
-import de.chrhuese.control.TemperatureConverter;
 import de.chrhuese.control.TemperatureService;
-import de.chrhuese.entity.Temperature;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/temperature")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Transactional(Transactional.TxType.REQUIRES_NEW)
+@ApplicationScoped
 public class TemperatureResource {
 
     @Inject
@@ -18,13 +22,19 @@ public class TemperatureResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTemperature() {
-        TemperatureDTO lastTemperatureDTO = this.service.getLastTemperature();
-        return Response.ok().build();
+        TemperatureDTO lastTemperatureDTO;
+        try {
+            lastTemperatureDTO = this.service.getLastTemperature();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(lastTemperatureDTO).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response pushTemperature(TemperatureDTO temperatureDTO) {
+        System.out.println(temperatureDTO);
         if (this.service.createTemperature(temperatureDTO)) {
             return Response.ok(temperatureDTO).build();
         } else {

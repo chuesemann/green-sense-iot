@@ -5,4 +5,4 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
-insert into Temperature (id, temperature, sensorId, timestamp) values (1, 17.0, 1, 178978788);
+--insert into Temperature (id, temperature, sensorId, timestamp) values (1, 17.0, 1, 178978788);
