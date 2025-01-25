@@ -36,13 +36,10 @@ public class TemperatureRepository implements TemperatureKatalog {
     }
 
     @Override
-    public boolean createTemperature(TemperatureDTO temperatureDTO) {
+    public boolean createTemperature(Temperature newTemperature) {
         try {
-            Temperature temperature = converter.fromDTO(temperatureDTO);
-            System.out.println("Persisting Temperature: " + temperature);
             em.persist(temperature);
-            //em.flush();
-            System.out.println("Temperature persisted successfully");
+            em.flush();
             return true;
         } catch (PersistenceException e) {
             System.out.println("Error while persisting temperature: " + e.getMessage());;

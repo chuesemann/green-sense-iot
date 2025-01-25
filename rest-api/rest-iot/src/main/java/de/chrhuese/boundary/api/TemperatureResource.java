@@ -22,12 +22,13 @@ public class TemperatureResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTemperature() {
-        TemperatureDTO lastTemperatureDTO;
+        Temperature lastTemperature;
         try {
-            lastTemperatureDTO = this.service.getLastTemperature();
+            lastTemperature = this.service.getLastTemperature();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        TemperatureDTO lastTemperatureDTO = TemperatureDTO.Converter.toDTO(lastTemperature);
         return Response.ok(lastTemperatureDTO).build();
     }
 

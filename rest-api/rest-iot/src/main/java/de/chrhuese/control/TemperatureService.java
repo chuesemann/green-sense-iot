@@ -19,9 +19,8 @@ public class TemperatureService {
 
 
     @Transactional
-    public TemperatureDTO getLastTemperature() {
-        Temperature lastTemperature = katalog.getLastTemperature();
-        return TemperatureDTO.Converter.toDTO(lastTemperature);
+    public Temperature getLastTemperature() {
+        return katalog.getLastTemperature();
     }
 
     public List<TemperatureDTO> getTemperatures() {
